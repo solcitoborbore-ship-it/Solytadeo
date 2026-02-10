@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Nuestro amor 💛</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Trebuchet MS', sans-serif;
+    background: linear-gradient(#ffe8c8, #fff6e9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 25px;
+    padding: 30px;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  }
+  h1 {
+    color: #d06b7b;
+    margin-bottom: 10px;
+  }
+  .counter {
+    font-size: 1.4em;
+    margin: 20px 0;
+    color: #444;
+    font-weight: bold;
+  }
+  .phrase {
+    font-style: italic;
+    color: #666;
+    margin-top: 15px;
+  }
+  .scene {
+    margin-top: 20px;
+    background: #fff1da;
+    padding: 15px;
+    border-radius: 18px;
+    font-size: 0.95em;
+    color: #777;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Nuestro tiempo juntos 💕</h1>
+
+  <div class="counter" id="counter"></div>
+
+  <div class="phrase">
+    “El tiempo sigue su curso, pero desde aquel día cada segundo late con nuestro amor.”
+  </div>
+
+  <div class="scene">
+    🧺 Picnic al atardecer <br>
+    👩 Rubia con vestido colorido <br>
+    👨 Morocho con remera roja y negra estilo rugby 🍔
+  </div>
+</div>
+
+<script>
+function updateCounter() {
+  const startDate = new Date(2025, 2, 9, 4, 0, 0);
+  const now = new Date();
+  let diff = now - startDate;
+
+  if (diff < 0) {
+    document.getElementById("counter").innerHTML =
+      "Nuestro amor está por comenzar ✨";
+    return;
+  }
+
+  const minutes = Math.floor(diff / 60000) % 60;
+  const hours = Math.floor(diff / 3600000) % 24;
+  const days = Math.floor(diff / (3600000 * 24));
+
+  document.getElementById("counter").innerHTML =
+    `${days} días · ${hours} horas · ${minutes} minutos juntos 💛`;
+}
+
+updateCounter();
+setInterval(updateCounter, 60000);
+</script>
+
+</body>
+</html>
