@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Rescate de Amor</title>
+<style>
+body {
+  margin: 0;
+  background: #87CEEB;
+  overflow: hidden;
+  font-family: Arial;
+}
+canvas {
+  display: block;
+  margin: auto;
+  background: #cce7ff;
+}
+#message {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 40%;
+  font-size: 28px;
+  color: #d10068;
+  display: none;
+}
+</style>
+</head>
+<body>
+
+<div id="message">
+  Gracias por salvarme ❤️ <br>
+  Feliz San Valentín Tadeo <br>
+  Te ama Sol
+</div>
+
+<canvas id="game" width="800" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let player = { x: 50, y: 300, width: 30, height: 40, color: "black" };
+let princess = { x: 720, y: 300, width: 30, height: 40 };
+
+let keys = {};
+
+let maze = [
+  {x:0,y:350,w:800,h:50},
+  {x:150,y:280,w:200,h:20},
+  {x:400,y:230,w:200,h:20},
+  {x:200,y:180,w:150,h:20},
+  {x:550,y:150,w:150,h:20}
+];
+
+document.addEventListener("keydown", e => keys[e.key] = true);
+document.addEventListener("keyup", e => keys[e.key] = false);
+
+function collision(a, b) {
+  return a.x < b.x + b.w &&
+         a.x + a.width > b.x &&
+         a.y < b.y + b.h &&
+         a.y + a.height > b.y;
+}
+
+let velocityY = 0;
+let gravity = 0.5;
+let onGround = false;
+
+function update() {
+  if (keys["ArrowRight"]) player.x += 4;
+  if (keys["ArrowLeft"]) player.x -= 4;
+
+  velocityY += gravity;
+  player.y += velocityY;
+  onGround = false;
+
+  maze.forEach(block => {
+    if (collision(player, block)) {
+      player.y = block.y - player.height;
+      velocityY = 0;
+      onGround = true;
+    }
+  });
+
+  if (keys[" "] && onGround) {
+    velocityY = -10;
+  }
+
+  if (collision(player, {x: princess.x, y: princess.y, w: princess.width, h: princess.height})) {
+    document.getElementById("message").style.display = "block";
+  }
+}
+
+function drawMaze() {
+  ctx.fillStyle = "#654321";
+  maze.forEach(block => {
+    ctx.fillRect(block.x, block.y, block.w, block.h);
+  });
+}
+
+function drawPlayer() {
+  ctx.fillStyle = player.color;
+  ctx.fillRect(player.x, player.y, player.width, player.height);
+
+  ctx.fillStyle = "#2b1b0f";
+  ctx.fillRect(player.x, player.y, player.width, 10);
+}
+
+function drawPrincess() {
+  ctx.fillStyle = "#ff69b4";
+  ctx.fillRect(princess.x, princess.y, princess.width, princess.height);
+
+  ctx.fillStyle = "#ffd700";
+  ctx.fillRect(princess.x, princess.y, princess.width, 10);
+}
+
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  update();
+  drawMaze();
+  drawPlayer();
+  drawPrincess();
+  requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+</body>
+</html>
